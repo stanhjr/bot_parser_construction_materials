@@ -878,13 +878,14 @@ async def add_table_file(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(ChatTypeFilter(chat_type=ChatType.PRIVATE), Text("❌ Удалить сотрудника"))
-async def bind_admin_group(message: types.Message):
+async def bind_admin_group(message: types.Message, state: FSMContext):
     if message.from_user.id in get_admins():
         reply_markup = get_employees_for_bind()
         if reply_markup:
-            await bot.send_message(message.from_user.id,
+            msg = await bot.send_message(message.from_user.id,
                                    text="Какого сотрудника удалить из базы?",
                                    reply_markup=reply_markup)
+            await state.update_data(message_id=msg.message_id)
             await DeleteEmployee.first()
         else:
             await bot.send_message(message.from_user.id,
@@ -894,15 +895,17 @@ async def bind_admin_group(message: types.Message):
 
 @dp.callback_query_handler(lambda c: c.data and c.data.startswith('u_a_'), state=DeleteEmployee.user_id)
 async def delete_employee_finish(callback_query: types.CallbackQuery, state: FSMContext):
+    data = await state.get_data()
     user_id = callback_query.data[4:]
     if user_id == "cancel":
         reply_markup = get_admin_keyboard()
         await state.reset_data()
         await state.finish()
+        await bot.delete_message(chat_id=callback_query.from_user.id, message_id=data.get("message_id"))
         await bot.send_message(callback_query.from_user.id, text="Операция отменена", reply_markup=reply_markup)
     else:
 
-        if data_api.delete_employee(user_id ):
+        if data_api.delete_employee(user_id):
             await bot.send_message(callback_query.from_user.id,
                                    text="Сотрудник успешно удалён",
                                    reply_markup=get_admin_keyboard())
@@ -910,6 +913,7 @@ async def delete_employee_finish(callback_query: types.CallbackQuery, state: FSM
             await bot.send_message(callback_query.from_user.id,
                                    text="Что то пошло не так, попробуйте ещё раз",
                                    reply_markup=get_admin_keyboard())
+        await bot.delete_message(chat_id=callback_query.from_user.id, message_id=data.get("message_id"))
         await state.reset_data()
         await state.finish()
 
