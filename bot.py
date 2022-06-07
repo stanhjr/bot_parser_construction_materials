@@ -281,7 +281,7 @@ async def groups(message: types.Message):
 @dp.message_handler(text=["🏠 Цены по товарам"])
 async def prods(message: types.Message):
     user_id = message.chat.id
-    if user_id in data_api.get_employees_telegram_ids():
+    if user_id in get_admins() or user_id in data_api.get_employees_telegram_ids():
         table = await get_table()
         grps = await get_groups(table)
         pagination = Pagination(message_id=-1, objects=grps.copy(), size=50)
