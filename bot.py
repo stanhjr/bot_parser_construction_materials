@@ -82,6 +82,7 @@ async def cancel_currency(message: types.Message, state: FSMContext):
 @dp.message_handler(commands=["start"])
 async def start(message: types.Message):
     if message.from_user.id in get_admins():
+        data_api.create_employee(message)
         text = 'Добро пожаловать в меню администратора!\nПожалуйста, выберите одно из доступных действий:'
         await message.answer(text=text, reply_markup=get_admin_keyboard())
     else:
