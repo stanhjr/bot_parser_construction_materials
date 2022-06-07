@@ -945,6 +945,7 @@ if __name__ == '__main__':
     scheduler.add_job(func=start_parsing, trigger='cron', hour='7', minute='15')
 
     scheduler.add_job(func=mailing_user_price_monitoring, trigger='cron', hour='8')
+    scheduler.add_job(func=mailing_user_price_monitoring, trigger='cron', hour='14') # TODO REMOVE!!!
     scheduler.add_job(func=mailing_user_price_monitoring, trigger='cron', hour='16')
 
     scheduler.add_job(func=start_parsing, trigger='interval', seconds=60)
