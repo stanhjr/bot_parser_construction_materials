@@ -125,7 +125,6 @@ async def parser(copy_file, first_row, last_row, all_data):
 
 async def all_parsing():
     try:
-
         shutil.copy('database.xlsx', 'temp/database_result.xlsx')
         shutil.copy('database.xlsx', 'temp/database_work.xlsx')
         original_file = "temp/database_work.xlsx"
@@ -154,10 +153,13 @@ async def all_parsing():
         await parser_epicenter(last_row=last_row, original_file=original_file, copy_file=copy_file)
 
         markup_excel_file(copy_file, last_row)
+
         if os.path.exists('tables/database_result.xlsx'):
             os.remove('tables/database_result.xlsx')
         shutil.copy(copy_file, 'tables/database_result.xlsx')
+
         os.remove(copy_file)
+
     except Exception as e:
         print(e)
 

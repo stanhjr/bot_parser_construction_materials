@@ -11,6 +11,7 @@ WorkingDirectory =/root/bot_parser_construction_materials/
 User=root
 ExecStart=/root/bot_parser_construction_materials/venv/bin/celery --app=celery_parser.tasks worker --loglevel=INFO
 Environment="PYTHONPATH=//root/bot_parser_construction_materials/"
+Restart=always
 
 [Install]
 WantedBy=multi-user.target

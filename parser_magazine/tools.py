@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 
 from parser_magazine.work_excel_file import set_price_to_book
+from utils import get_admins
 
 SELECTOR_DICT = {
     'D': '#prices > div > div > div.card-body.py-3.px-4 > dl > dd:nth-child(2)',
@@ -44,6 +45,9 @@ def get_price(page_text, liter_key, cell, copy_file):
             text = format_text(text)
             cell = 'G' + cell[1:]
             set_price_to_book(address=cell, price=text, file_path=copy_file)
+        else:
+            cell = 'G' + cell[1:]
+            set_price_to_book(address=cell, price='', file_path=copy_file)
 
     if liter_key == 'O':
         elem = soup.find('span', class_='woocommerce-Price-amount amount')
@@ -70,9 +74,13 @@ def format_text(text):
     return text
 
 
-async def edit_message(chat_id, msg_id, text):
-    from bot import bot
-    await bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text=text)
+# async def send_document_for_admins(file_path):
+#     from ... main import bot
+#     for user_id in get_admins():
+#         try:
+#             await bot.send_document(user_id, open(file_path, 'rb'))
+#         except Exception as e:
+#             print(e)
 
 
 last_count = 1

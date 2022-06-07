@@ -139,6 +139,8 @@ def markup_excel_file(file_path, last_row):
                     sheet[cell] = ''
                 elif letter == 'B':
                     sheet[cell] = ''
+                elif letter == 'G' and not cell_value:
+                    sheet[cell] = ''
                 if not cell_value:
                     continue
                 elif cell_value > d_value:

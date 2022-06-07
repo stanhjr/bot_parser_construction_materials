@@ -6,7 +6,8 @@ from models.data_api import data_api
 
 def get_admin_keyboard():
     kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    kb.add(types.KeyboardButton(text='Получить ссылку доступа'))
+    kb.add(types.KeyboardButton(text='Ссылка доступа'),
+           types.KeyboardButton(text='🗒 Отчет'))
     kb.add(types.KeyboardButton(text='🕘 Время Парсинга'),
            types.KeyboardButton(text='⚙️Настройки')),
     kb.add(types.KeyboardButton(text='🏘 Цены по группам'),
