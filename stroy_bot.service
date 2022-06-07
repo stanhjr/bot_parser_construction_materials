@@ -1,0 +1,18 @@
+[Unit]
+Description=bot construction parse
+After=syslog.target
+After=network.target
+
+[Service]
+
+WorkingDirectory =/root/bot_parser_construction_materials/
+
+User=root
+Type=simple
+ExecStart=/root/bot_parser_construction_materials/venv/bin/python /root/bot_parser_construction_materials/bot.py
+Environment="PYTHONPATH=//root/bot_parser_construction_materials/"
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
