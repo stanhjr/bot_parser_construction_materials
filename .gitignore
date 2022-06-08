@@ -2,10 +2,13 @@
 __pycache__/
 *.py[cod]
 *$py.class
+data.json
+database.xlsx
 
 # C extensions
 *.so
-
+*.json
+*.xlsx
 # Distribution / packaging
 .Python
 .idea
