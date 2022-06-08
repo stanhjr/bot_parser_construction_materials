@@ -83,7 +83,7 @@ def is_float(string: str):
         result = float(string)
         return result
     except Exception as e:
-        return False
+        return ''
 
 
 def cut_paste_cell(file_path, last_row):
@@ -152,3 +152,19 @@ def markup_excel_file(file_path, last_row):
         return file_path
     finally:
         wb.save(file_path)
+
+
+def markup_g_sell(file_path, last_row):
+    wb = excel.load_workbook(file_path, read_only=False, keep_vba=False, data_only=False, keep_links=True)
+    wb.active = 0
+    sheet = wb.active
+
+    try:
+        for i in range(2, last_row + 1):
+            cell = 'G' + str(i)
+            value = is_float(sheet[cell].value)
+            sheet[cell] = value
+        # wb.save(file_path)
+    finally:
+        wb.save(file_path)
+

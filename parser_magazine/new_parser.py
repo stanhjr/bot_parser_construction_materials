@@ -9,7 +9,8 @@ import aiohttp
 
 from parser_magazine.epicenter import parser_epicenter
 from parser_magazine.tools import SELECTOR_DICT, get_price, format_text
-from parser_magazine.work_excel_file import find_last_row_excel, set_price_to_book, get_all_link_market, markup_excel_file
+from parser_magazine.work_excel_file import find_last_row_excel, set_price_to_book, get_all_link_market, \
+    markup_excel_file, markup_g_sell
 import encodings
 
 encodings.aliases.aliases['cp_1251'] = 'cp1251'
@@ -69,7 +70,12 @@ async def get_page_data(session, url, cell, key_selector, copy_file):
                     text = text.strip()
                     if key_selector == 'J':
                         text = bytes(text, 'iso-8859-1').decode('utf-8')
-                    text = format_text(text)
+                    if key_selector == 'O':
+                        text = format_text(text)
+                        if len(text.split('.')[0]) == 1:
+                            text = float(text) * 1000
+                    else:
+                        text = format_text(text)
                     print(cell, text)
                     set_price_to_book(address=cell, price=text, file_path=copy_file)
                     return
@@ -153,6 +159,7 @@ async def all_parsing():
         await parser_epicenter(last_row=last_row, original_file=original_file, copy_file=copy_file)
 
         markup_excel_file(copy_file, last_row)
+        markup_g_sell(copy_file, last_row)
 
         if os.path.exists('tables/database_result.xlsx'):
             os.remove('tables/database_result.xlsx')
