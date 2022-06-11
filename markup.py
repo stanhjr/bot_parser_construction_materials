@@ -14,6 +14,7 @@ def get_admin_keyboard():
            types.KeyboardButton(text='🏠 Цены по товарам'))
     kb.add(types.KeyboardButton(text='➕ Добавить таблицу'),
            types.KeyboardButton(text='❌ Удалить сотрудника'))
+    kb.add(KeyboardButton("❌Отмена"))
 
     return kb
 
